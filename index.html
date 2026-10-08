@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0b0b16">
+<title>EASY BOOK — احجز موعدك بثقة</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; font-family:'Segoe UI', Tahoma, Arial, sans-serif; }
+body { min-height:100vh; background:#0b0b16; color:#e8e8f0;
+  background-image:radial-gradient(circle at 15% 5%, #1e1e40 0%, transparent 45%), radial-gradient(circle at 85% 95%, #0d2b2b 0%, transparent 45%); }
+body::before { content:'EASY CODE'; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-30deg);
+  font-size:80px; font-weight:900; color:rgba(255,255,255,.015); letter-spacing:20px; pointer-events:none; white-space:nowrap; }
+.wrap { max-width:430px; margin:0 auto; padding:22px 18px 40px; position:relative; }
+.brand { text-align:center; padding:14px 0 4px; }
+.logo { font-size:44px; }
+h1 { font-size:24px; font-weight:800; background:linear-gradient(90deg,#00d9c0,#7c6cff); -webkit-background-clip:text; background-clip:text; color:transparent; margin-top:2px; }
+.tag { color:#9a9ab8; font-size:13px; margin-top:5px; }
+label { display:block; font-size:13px; color:#c8c8dd; margin:16px 0 8px; font-weight:600; }
+input, select { width:100%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px;
+  color:#fff; padding:13px 14px; font-size:15px; outline:none; direction:rtl; }
+input:focus, select:focus { border-color:#00d9c0; }
+select option { background:#16162c; }
+.svcs { display:flex; flex-wrap:wrap; gap:8px; }
+.svc { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:#c8c8dd; border-radius:20px;
+  padding:9px 16px; font-size:13px; cursor:pointer; transition:all .2s; }
+.svc.on { background:linear-gradient(90deg,#00d9c0,#7c6cff); color:#0b0b16; font-weight:700; border-color:transparent; }
+.row { display:flex; gap:10px; }
+.row > div { flex:1; }
+.slots { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.slot { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:#c8c8dd; border-radius:10px;
+  padding:10px 0; font-size:13px; text-align:center; cursor:pointer; transition:all .2s; }
+.slot.on { background:linear-gradient(90deg,#00d9c0,#7c6cff); color:#0b0b16; font-weight:700; border-color:transparent; }
+.go { width:100%; margin-top:22px; background:linear-gradient(90deg,#00d9c0,#7c6cff); border:none; border-radius:14px;
+  padding:15px; color:#0b0b16; font-size:16px; font-weight:800; cursor:pointer; }
+.go:active { transform:scale(.98); }
+.err { display:none; background:rgba(255,107,107,.12); border:1px solid rgba(255,107,107,.3); color:#ff9d9d;
+  border-radius:11px; padding:11px 14px; font-size:13px; margin-top:12px; }
+.ok { display:none; text-align:center; background:rgba(0,217,192,.07); border:1px solid rgba(0,217,192,.25);
+  border-radius:18px; padding:34px 20px; margin-top:20px; }
+.ok .em { font-size:48px; }
+.ok h2 { font-size:19px; margin:8px 0 6px; color:#00d9c0; }
+.ok p { font-size:13.5px; color:#9a9ab8; line-height:1.9; }
+.ok .dt { font-size:15px; color:#e8e8f0; margin-top:8px; font-weight:700; }
+.chk { margin-top:20px; text-align:center; }
+.chk a { color:#7c6cff; font-size:13px; text-decoration:none; cursor:pointer; }
+.foot { text-align:center; margin-top:26px; font-size:11px; color:#55556e; letter-spacing:1px; line-height:1.9; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <div class="logo">💈</div>
+    <h1 id="bn">EASY BOOK</h1>
+    <div class="tag">احجز موعدك في دقيقة من موبايلك — من غير مكالمات ولا انتظار</div>
+  </div>
+
+  <div id="form">
+    <label>اختر الخدمة</label>
+    <div class="svcs" id="svcs"></div>
+
+    <div class="row">
+      <div>
+        <label>اليوم</label>
+        <input type="date" id="date">
+      </div>
+      <div>
+        <label>رقم موبايلك</label>
+        <input type="tel" id="phone" inputmode="numeric" placeholder="01xxxxxxxxx" maxlength="11">
+      </div>
+    </div>
+
+    <label>الميعاد المناسب</label>
+    <div class="slots" id="slots"></div>
+
+    <label>اسمك</label>
+    <input type="text" id="name" placeholder="اكتب اسمك">
+
+    <button class="go" id="go" onclick="book()">✅ احجز الموعد</button>
+    <div class="err" id="err"></div>
+  </div>
+
+  <div class="ok" id="ok">
+    <div class="em">🎉</div>
+    <h2>الحجز وصل!</h2>
+    <p>هنكلمك على رقمك في أقرب وقت للتأكيد.<br>لو محتاج تغيّر الموعد كلمنا على نفس الرقم.</p>
+    <div class="dt" id="dt"></div>
+  </div>
+
+  <div class="chk" id="chk"><a onclick="toggleMy()">مواعيدي — اعرض حجوزاتي</a></div>
+  <div class="ok" id="mybox" style="display:none">
+    <p style="color:#c8c8dd">اكتب رقمك اللي حجزت بيه:</p>
+    <input type="tel" id="myphone" inputmode="numeric" placeholder="01xxxxxxxxx" maxlength="11" style="margin-top:10px">
+    <button class="go" style="margin-top:12px" onclick="myBookings()">اعرض حجوزاتي</button>
+    <div id="mylist" style="margin-top:14px; font-size:13.5px; line-height:2"></div>
+  </div>
+
+  <div class="foot">EASY CODE — APPS MADE EASY</div>
+</div>
+<script>
+const API = 'https://shark-vision-labs.base44.app/functions/bookPublic';
+const HOURS = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+const $ = id => document.getElementById(id);
+let SVC = '';
+
+async function boot(retry) {
+  let c;
+  try { c = await (await fetch(API)).json(); }
+  catch(e) { if (!retry) setTimeout(() => boot(true), 2500); return; }
+  if (c.initialized) $('bn').textContent = c.business_name;
+  $('svcs').innerHTML = (c.services || []).map(s =>
+    `<div class="svc" data-s="${s}" onclick="pick(this)">${s}</div>`).join('');
+  const d = new Date();
+  $('date').min = d.toISOString().slice(0, 10);
+  $('date').value = d.toISOString().slice(0, 10);
+  $('slots').innerHTML = HOURS.map(h => `<div class="slot" data-t="${String(h).padStart(2,'0')}:00" onclick="pickT(this)">${h > 12 ? h - 12 + ' م' : h + ' ص'}</div>`).join('');
+}
+function pick(el) { SVC = el.dataset.s; document.querySelectorAll('.svc').forEach(x => x.classList.remove('on')); el.classList.add('on'); }
+function pickT(el) { document.querySelectorAll('.slot').forEach(x => x.classList.remove('on')); el.classList.add('on'); }
+function showErr(m) { const e = $('err'); e.textContent = m; e.style.display = 'block'; }
+async function book() {
+  $('err').style.display = 'none';
+  const name = $('name').value.trim(), phone = $('phone').value.replace(/\D/g, '');
+  const date = $('date').value, ts = document.querySelector('.slot.on');
+  if (!SVC) return showErr('اختر الخدمة الأول');
+  if (!date) return showErr('اختر اليوم');
+  if (!ts) return showErr('اختر الميعاد');
+  if (phone.length < 11) return showErr('اكتب رقم موبايل صحيح 11 رقم');
+  if (name.length < 2) return showErr('اكتب اسمك');
+  $('go').textContent = '...'; $('go').disabled = true;
+  try {
+    const r = await (await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'book', name, phone, service: SVC, date, time: ts.dataset.t }) })).json();
+    if (r.ok) {
+      $('form').style.display = 'none'; $('chk').style.display = 'none';
+      $('dt').textContent = SVC + ' — ' + date + ' الساعة ' + ts.dataset.t;
+      $('ok').style.display = 'block';
+    } else { showErr(r.error || 'حصل مشكلة، جرّب تاني'); $('go').textContent = '✅ احجز الموعد'; $('go').disabled = false; }
+  } catch(e) { showErr('حصل مشكلة في الاتصال، جرّب تاني'); $('go').textContent = '✅ احجز الموعد'; $('go').disabled = false; }
+}
+function toggleMy() { const b = $('mybox'); b.style.display = b.style.display === 'none' ? 'block' : 'none'; }
+async function myBookings() {
+  const phone = $('myphone').value.replace(/\D/g, '');
+  if (phone.length < 11) return;
+  $('mylist').textContent = '...';
+  try {
+    const r = await (await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'my', phone }) })).json();
+    if (!r.bookings || !r.bookings.length) { $('mylist').innerHTML = '<span style="color:#77779a">مفيش حجوزات بالرقم ده</span>'; return; }
+    const st = { new: '⏳ في انتظار التأكيد', confirmed: '✅ متأكد', done: '✔️ تم', cancelled: '✖️ ملغي' };
+    $('mylist').innerHTML = r.bookings.map(b => `<div>${st[b.status] || b.status} — ${b.service} — ${b.date} ${b.time}</div>`).join('');
+  } catch(e) { $('mylist').textContent = 'حصل مشكلة، جرّب تاني'; }
+}
+boot();
+</script>
+</body>
+</html>
